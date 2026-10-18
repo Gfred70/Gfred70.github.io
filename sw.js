@@ -6,7 +6,7 @@
 // (/GfredAnalyzer-app/, /gfreddream-app/, ...) passe sans y toucher, chaque
 // appli garde son propre service worker et son propre cache.
 // Nouvelle version ou fichier ajouté : changer CACHE_NAME.
-const CACHE_NAME = 'gfredmaster-0.1.0';
+const CACHE_NAME = 'gfredmaster-0.1.1';
 const PRECACHE_URLS = [
   './', 'index.html', 'manifest.json', 'favicon.ico',
   'icon-180.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-192.png', 'icon-maskable-512.png',
