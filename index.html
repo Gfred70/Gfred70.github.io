@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GfredMaster</title>
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0B1220">
+<style>
+  :root{
+    --deep:#0B1220; --panel:#111B2C; --line:#24344C;
+    --mist:#D8E1EA; --mist-dim:#71839A; --accent:#5AA1EE;
+    --sans:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    --mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:radial-gradient(ellipse 900px 480px at 50% -10%,#16294A 0%,transparent 60%),var(--deep);
+       color:var(--mist);font-family:var(--sans);min-height:100vh;}
+  .wrap{max-width:560px;margin:0 auto;padding:max(24px,env(safe-area-inset-top)) 16px 40px;}
+  header{display:flex;align-items:center;gap:14px;margin:8px 4px 26px;}
+  header img{width:56px;height:56px;}
+  header b{display:block;font-size:22px;letter-spacing:.04em;}
+  header small{font-family:var(--mono);font-size:11px;color:var(--mist-dim);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;}
+  a.tile{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 10px 16px;
+         background:var(--panel);border:1px solid var(--line);border-radius:18px;
+         color:var(--mist);text-decoration:none;-webkit-tap-highlight-color:transparent;
+         transition:transform .12s ease,border-color .12s ease;}
+  a.tile:active{transform:scale(.96);border-color:var(--accent);}
+  a.tile img{width:88px;height:88px;border-radius:20px;}
+  a.tile b{font-size:15px;text-align:center;}
+  a.tile.soon{opacity:.45;pointer-events:none;}
+  a.tile small{font-size:12px;color:var(--mist-dim);text-align:center;line-height:1.3;}
+  footer{margin-top:30px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--mist-dim);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="icon-192.png" alt="">
+    <div><b>GfredMaster</b><small>mes applis · v0.1.0</small></div>
+  </header>
+  <div class="grid" id="grid"></div>
+  <footer id="foot"></footer>
+</div>
+<script>
+// ═══ La liste des applis : ajouter une appli = ajouter une ligne ═══
+const APPS = [
+  { name: 'GfredAnalyzer', info: 'Analyseur trimix (Bluetooth)', url: '/GfredAnalyzer-app/', icon: 'apps/gfredanalyzer.png' },
+  { name: 'GfredDream',    info: 'Recycleur rEvo, checklists',   url: '/gfreddream-app/',    icon: 'apps/gfreddream.png' },
+  { name: 'Gonflage O2',   info: 'Prix des gonflages O2',        url: '/Prix-gonflage-O2/',  icon: 'apps/gonflage-o2.png' },
+  { name: 'GfredO2Tank',   info: 'Bientôt',                      url: '/GfredO2Tank/',       icon: 'apps/gfredo2tank.png', soon: true },
+];
+
+const grid = document.getElementById('grid');
+for (const a of APPS) {
+  const t = document.createElement('a');
+  t.className = a.soon ? 'tile soon' : 'tile';
+  if (!a.soon) t.href = a.url;   // appli pas encore en ligne : tuile grisée, pas de lien
+  t.innerHTML = '<img alt=""><b></b><small></small>';
+  t.querySelector('img').src = a.icon;
+  t.querySelector('b').textContent = a.name;
+  t.querySelector('small').textContent = a.info;
+  grid.appendChild(t);
+}
+document.getElementById('foot').textContent = navigator.onLine ? '' : 'hors réseau';
+window.addEventListener('online',  () => document.getElementById('foot').textContent = '');
+window.addEventListener('offline', () => document.getElementById('foot').textContent = 'hors réseau');
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
